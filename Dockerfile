@@ -7,6 +7,13 @@ WORKDIR /usr/src/app
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip3 install -r requirements.txt
 
+# Configure jupyter plugin for install extension
+RUN jupyter contrib nbextension install --user
+RUN jupyter nbextensions_configurator enable --user
+
+#clean up, no need to clobber the image with python2
+RUN apt-get autoremove -y python
+
 RUN pip3 install --no-cache notebook
 ENV HOME=/tmp
 ENV WORKDIR=/tmp
