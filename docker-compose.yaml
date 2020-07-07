@@ -3,13 +3,19 @@ services:
     app:
         build:
             context: ./
+            dockerfile: Dockerfile
+            args:
+                - NB_USER:jovyan
+                - NB_UID:1000
         ports:
             - "${JUPYTER_PORT}:8888"
         volumes:
-            - ./app:/usr/src/app
+            - ./app:/home/jovyan
         networks:
             - default
+        entrypoint: "jupyter notebook --ip=0.0.0.0 --port=8888 --allow-root --NotebookApp.token=''"
     docsify:
+
         build:
             context: ./
             dockerfile: docsify.Dockerfile
